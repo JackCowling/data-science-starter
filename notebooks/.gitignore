@@ -1,0 +1,6 @@
+# Ignore Everything
+*
+!.gitignore
+
+# Include notebooks you wish to be version controlled here, in the form !notebook_name
+!test_ground.ipynb
