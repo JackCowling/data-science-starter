@@ -14,3 +14,6 @@ clean:
 
 build: clean
 		poetry build
+
+lint_in_place:
+		poetry run yapf -r -i --style google -vv -e .venv .
