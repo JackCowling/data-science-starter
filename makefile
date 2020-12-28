@@ -15,5 +15,8 @@ clean:
 build: clean
 		poetry build
 
-lint_in_place:
+lint-in-place:
 		poetry run yapf -r -i --style google -vv -e .venv .
+
+type-check:
+		poetry run mypy src --disallow-untyped-calls --disallow-untyped-defs --disallow-incomplete-defs
