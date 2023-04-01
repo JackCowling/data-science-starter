@@ -1,24 +1,13 @@
-.DEFAULT: update_requirements
+install-package:
+	python -m pip install -e .
 
-check:
-	poetry check
+local-install:
+	python -m pip install -e .[dev,test]
 
-lock: check
-	poetry lock
-
-update-dev-requirements: lock
-	poetry export -o requirements_dev.txt --with dev
-
-update-prod-requirements: check lock
-	poetry export -o requirements.txt
-
-update-requirements: update-dev-requirements update-prod-requirements
+run-all-checks: run-unit-tests type-check black-check
 
 run-unit-tests:
 	pytest --cov=src/ testing/
-
-lint-check:
-	pylint --output-format=json:pylint_output.json,text src
 
 type-check:
 	mypy src --disallow-untyped-calls --disallow-untyped-defs --disallow-incomplete-defs
