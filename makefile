@@ -1,22 +1,30 @@
-.DEFAULT: build
+.DEFAULT: update_requirements
 
 check:
-		poetry check
+	poetry check
 
-install: check
-		poetry install
+lock: check
+	poetry lock
 
-lock:
-		poetry lock 
+update-dev-requirements: lock
+	poetry export -o requirements_dev.txt --with dev
 
-clean: 
-		rm -r -f ./dist/
+update-prod-requirements: check lock
+	poetry export -o requirements.txt
 
-build: clean
-		poetry build
+update-requirements: update-dev-requirements update-prod-requirements
 
-lint-in-place:
-		poetry run yapf -r -i --style google -vv -e .venv .
+run-unit-tests:
+	pytest --cov=src/ testing/
+
+lint-check:
+	pylint --output-format=json:pylint_output.json,text src
 
 type-check:
-		poetry run mypy src --disallow-untyped-calls --disallow-untyped-defs --disallow-incomplete-defs
+	mypy src --disallow-untyped-calls --disallow-untyped-defs --disallow-incomplete-defs
+
+black-check:
+	black --check src
+
+black-apply:
+	black src
