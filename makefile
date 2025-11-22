@@ -1,19 +1,19 @@
 install-package:
-	python -m pip install -e .
+	uv sync
 
 local-install:
-	python -m pip install -e .[dev,test]
+	uv sync --all-groups
 
 run-all-checks: run-unit-tests type-check black-check
 
 run-unit-tests:
-	pytest --cov=src/ testing/
+	uv run pytest --cov=src/ testing/
 
 type-check:
-	mypy src --disallow-untyped-calls --disallow-untyped-defs --disallow-incomplete-defs
+	uv run mypy src --disallow-untyped-calls --disallow-untyped-defs --disallow-incomplete-defs
 
 black-check:
-	black --check src
+	uv run black --check src testing
 
 black-apply:
-	black src
+	uv run black src testing
